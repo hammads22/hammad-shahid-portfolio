@@ -260,21 +260,7 @@
 
   function bumpDownload() {
     try { fetch(DL_API + "/up", { method: "POST" }).catch(function () {}); } catch (e) {}
-  }
-  function refreshDownloadCount() {
-    var el = document.getElementById("dl-count");
-    if (!el) return;
-    try {
-      fetch(DL_API)
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (d && typeof d.count === "number") el.textContent = d.count;
-        })
-        .catch(function () { el.textContent = "–"; });
-    } catch (e) { el.textContent = "–"; }
-  }
-  document.querySelectorAll("a[download]").forEach(function (a) {
+  }  document.querySelectorAll("a[download]").forEach(function (a) {
     a.addEventListener("click", bumpDownload);
   });
-  refreshDownloadCount();
 })();
