@@ -252,4 +252,29 @@
 
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
+
+  /* ---------------- Resume download counter ----------------
+     Free counter service (counterapi.dev) — increments on every resume
+     download click and shows the total in the footer. Fails silently. */
+  var DL_API = "https://api.counterapi.dev/v1/hammadshahid/resume";
+
+  function bumpDownload() {
+    try { fetch(DL_API + "/up", { method: "POST" }).catch(function () {}); } catch (e) {}
+  }
+  function refreshDownloadCount() {
+    var el = document.getElementById("dl-count");
+    if (!el) return;
+    try {
+      fetch(DL_API)
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && typeof d.count === "number") el.textContent = d.count;
+        })
+        .catch(function () { el.textContent = "–"; });
+    } catch (e) { el.textContent = "–"; }
+  }
+  document.querySelectorAll("a[download]").forEach(function (a) {
+    a.addEventListener("click", bumpDownload);
+  });
+  refreshDownloadCount();
 })();
